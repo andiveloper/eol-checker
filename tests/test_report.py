@@ -1,4 +1,5 @@
 import json
+from pathlib import Path
 
 from eol_checker.models import Dependency, DependencyReport, Finding, Report, Severity
 from eol_checker.report import render
@@ -119,3 +120,19 @@ def test_vuln_cell_does_not_count_osv_api_errors_as_vulns():
     output = render(report, fmt="markdown")
     assert "| build.gradle | maven | org.json:json | 20250107 | - | unmapped | error | Unknown |" in output
     assert "`osv` / Unknown: OSV API error" in output
+
+
+def test_markdown_locations_are_relative_to_base_path():
+    dep = Dependency(
+        ecosystem="maven",
+        namespace="org.json",
+        name="json",
+        version="20250107",
+        purl="pkg:maven/org.json/json@20250107",
+        source_file="/repo/samples/build.gradle",
+        line=55,
+    )
+    report = Report(dependency_reports=[DependencyReport(dep)])
+    output = render(report, fmt="markdown", base_path=Path("/repo"))
+    assert "samples/build.gradle:55" in output
+    assert "/repo/samples/build.gradle:55" not in output

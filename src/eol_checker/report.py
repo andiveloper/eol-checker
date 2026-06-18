@@ -3,16 +3,22 @@
 from __future__ import annotations
 
 import json
+from pathlib import Path
 from typing import Optional
 
-from eol_checker.models import DependencyReport, Finding, Report, Severity
+from eol_checker.models import Dependency, DependencyReport, Finding, Report, Severity
 
 
-def render(report: Report, fmt: str = "markdown") -> str:
+def render(
+    report: Report,
+    fmt: str = "markdown",
+    *,
+    base_path: Optional[Path] = None,
+) -> str:
     if fmt == "json":
         return render_json(report)
     if fmt == "markdown":
-        return render_markdown(report)
+        return render_markdown(report, base_path=base_path)
     raise ValueError(f"Unknown format: {fmt}")
 
 
@@ -27,7 +33,7 @@ def _cell(value: Optional[object]) -> str:
     return str(value).replace("|", "\\|")
 
 
-def render_markdown(report: Report) -> str:
+def render_markdown(report: Report, *, base_path: Optional[Path] = None) -> str:
     dependency_reports = report.dependency_reports
     total = len(dependency_reports)
     lines: list[str] = []
@@ -60,10 +66,10 @@ def render_markdown(report: Report) -> str:
     lines.append("| " + " | ".join(["---"] * 8) + " |")
 
     for dep_report in _sorted_reports(dependency_reports):
-        lines.append(_dependency_row(dep_report))
+        lines.append(_dependency_row(dep_report, base_path=base_path))
     lines.append("")
 
-    detail_lines = _details(dependency_reports)
+    detail_lines = _details(dependency_reports, base_path=base_path)
     if detail_lines:
         lines.append("## Findings")
         lines.append("")
@@ -106,10 +112,12 @@ def _sorted_reports(reports: list[DependencyReport]) -> list[DependencyReport]:
     )
 
 
-def _dependency_row(dep_report: DependencyReport) -> str:
+def _dependency_row(
+    dep_report: DependencyReport, *, base_path: Optional[Path] = None
+) -> str:
     dep = dep_report.dependency
     cells = [
-        _cell(dep.location),
+        _cell(_location(dep, base_path)),
         _cell(dep.ecosystem),
         _cell(dep.coordinate),
         _cell(dep.version),
@@ -169,7 +177,9 @@ def _latest_cell(dep_report: DependencyReport) -> str:
     return finding.summary
 
 
-def _details(reports: list[DependencyReport]) -> list[str]:
+def _details(
+    reports: list[DependencyReport], *, base_path: Optional[Path] = None
+) -> list[str]:
     lines: list[str] = []
     for dep_report in _sorted_reports(reports):
         problem_findings = [
@@ -182,7 +192,7 @@ def _details(reports: list[DependencyReport]) -> list[str]:
         dep = dep_report.dependency
         lines.append(f"### `{dep.coordinate}`")
         lines.append("")
-        lines.append(f"- Location: `{dep.location}`")
+        lines.append(f"- Location: `{_location(dep, base_path)}`")
         for finding in problem_findings:
             text = (
                 f"- `{finding.source}` / {_severity_label(finding.severity)}: "
@@ -202,6 +212,18 @@ def _details(reports: list[DependencyReport]) -> list[str]:
             lines.append(text)
         lines.append("")
     return lines
+
+
+def _location(dependency: Dependency, base_path: Optional[Path]) -> str:
+    source_file = dependency.source_file
+    if base_path is not None:
+        try:
+            source_file = str(Path(source_file).resolve().relative_to(base_path.resolve()))
+        except (OSError, ValueError):
+            source_file = dependency.source_file
+    if dependency.line:
+        return f"{source_file}:{dependency.line}"
+    return source_file
 
 
 def render_json(report: Report) -> str:

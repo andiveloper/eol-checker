@@ -114,6 +114,14 @@ def _collect_dependencies(
     return dependencies
 
 
+def _find_git_root(start: Path) -> Path:
+    current = start.resolve()
+    for directory in [current, *current.parents]:
+        if (directory / ".git").exists():
+            return directory.parent
+    return current
+
+
 def main(argv: Optional[Sequence[str]] = None) -> int:
     args = build_arg_parser().parse_args(argv)
     registry = default_registry()
@@ -172,7 +180,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         finally:
             provider_registry.close()
 
-    output = render(report, fmt=args.format)
+    output = render(report, fmt=args.format, base_path=_find_git_root(Path.cwd()))
 
     if args.output:
         Path(args.output).write_text(output + "\n", encoding="utf-8")
