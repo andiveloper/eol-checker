@@ -5,13 +5,15 @@ package versions across lifecycle, vulnerability, and dependency-currency data
 sources.
 
 It parses explicitly declared dependencies, builds a [package URL (purl)](https://github.com/package-url/purl-spec)
-for each, and combines findings from:
+for each, and combines findings from multiple data sources.
 
-| Source | Purpose |
-| --- | --- |
-| [endoflife.date](https://endoflife.date/) | Product lifecycle / EOL checks for runtimes and frameworks. |
-| [OSV.dev](https://osv.dev/) | Known vulnerabilities for concrete package versions. |
-| [deps.dev](https://deps.dev/) | Latest-version / dependency currency checks. |
+## Data sources
+
+| Source | `--source` value | Purpose |
+| --- | --- | --- |
+| [endoflife.date](https://endoflife.date/) | `eol` | Product lifecycle / EOL checks for runtimes and frameworks. |
+| [OSV.dev](https://osv.dev/) | `osv` | Known vulnerabilities for concrete package versions. |
+| [deps.dev](https://deps.dev/) | `deps-dev` | Latest-version / dependency currency checks. |
 
 The parser layer is pluggable. Supported formats:
 
@@ -95,11 +97,19 @@ and a detailed findings section for non-`none` findings.
 Main result columns:
 
 - `EOL`: endoflife.date result (`supported`, EOL finding, unknown, or unmapped).
-- `Vulns`: number of OSV vulnerabilities found for the concrete version.
-- `Latest`: latest/default version from deps.dev when the current version is behind.
-- `Top severity`: max severity across all findings for that dependency.
+- `Vulns`: number of OSV vulnerabilities found for the concrete version, with
+  CVE/OSV/GHSA identifiers when available; `error` means OSV could not be queried.
+- `Latest version`: latest/default version from deps.dev when the current version is behind.
+- `Severity`: the highest-impact finding from all enabled sources for that dependency.
 
-Severity values: `none`, `low`, `medium`, `high`, `critical`, `unknown`.
+Severity combines lifecycle, vulnerability, and version-currency signals into
+one sortable value:
+
+- `critical` / `high` / `medium` / `low`: vulnerability severity from OSV, an
+  EOL finding, or a currency finding scaled by how far behind the latest version is.
+- `unknown`: the tool found a relevant issue but could not confidently rank it
+  (for example an unresolved version or provider API error).
+- `none`: no enabled provider found a problem for that dependency.
 
 ## Development
 

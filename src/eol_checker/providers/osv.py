@@ -8,6 +8,7 @@ from typing import Optional
 import httpx
 
 from eol_checker.models import Dependency, Finding, Severity
+from eol_checker.purl import purl_without_version
 
 OSV_BASE_URL = "https://api.osv.dev/v1"
 _DYNAMIC_VERSION = re.compile(r"[+*\[\]()$]|latest|release|SNAPSHOT", re.IGNORECASE)
@@ -52,7 +53,10 @@ class OsvProvider:
 
         payload = {
             "queries": [
-                {"version": dependency.version, "package": {"purl": dependency.purl}}
+                {
+                    "version": dependency.version,
+                    "package": {"purl": purl_without_version(dependency.purl)},
+                }
                 for dependency in query_deps
             ]
         }

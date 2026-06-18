@@ -1,4 +1,5 @@
 import httpx
+import json
 
 from eol_checker.models import Dependency, Severity
 from eol_checker.providers.depsdev import DepsDevProvider
@@ -67,6 +68,13 @@ def test_osv_provider_batches_queries_and_enriches_vulnerability(httpx_mock):
     assert findings[0].identifier == "GHSA-1234"
     assert findings[0].severity == Severity.HIGH
     assert findings[0].fixed_version == "2.7.1"
+    request = httpx_mock.get_requests()[0]
+    payload = json.loads(request.content.decode())
+    assert payload["queries"][0]["version"] == "2.7.0"
+    assert (
+        payload["queries"][0]["package"]["purl"]
+        == "pkg:maven/org.springframework.boot/spring-boot-starter-web"
+    )
 
 
 def test_depsdev_provider_reports_outdated_versions(httpx_mock):

@@ -38,6 +38,13 @@ def render_markdown(report: Report) -> str:
 
     lines.append("## Summary")
     lines.append("")
+    lines.append(
+        "Severity is the highest-impact finding for a dependency across all enabled "
+        "sources: OSV vulnerabilities, endoflife.date lifecycle status, and deps.dev "
+        "version-currency signals. `unknown` means the tool found a relevant issue "
+        "but could not rank it confidently; `none` means no problem was found."
+    )
+    lines.append("")
     lines.append("| Top severity | Count |")
     lines.append("| --- | --- |")
     counts = _severity_counts(dependency_reports)
@@ -48,9 +55,7 @@ def render_markdown(report: Report) -> str:
 
     lines.append("## Results")
     lines.append("")
-    header = (
-        "| File | Package | Version | Ecosystem | EOL | Vulns | Latest | Top severity |"
-    )
+    header = "| File | Ecosystem | Package | Current version | Latest version | EOL | Vulns | Severity |"
     lines.append(header)
     lines.append("| " + " | ".join(["---"] * 8) + " |")
 
@@ -105,12 +110,12 @@ def _dependency_row(dep_report: DependencyReport) -> str:
     dep = dep_report.dependency
     cells = [
         _cell(dep.location),
+        _cell(dep.ecosystem),
         _cell(dep.coordinate),
         _cell(dep.version),
-        _cell(dep.ecosystem),
+        _cell(_latest_cell(dep_report)),
         _cell(_eol_cell(dep_report)),
         _cell(_vuln_cell(dep_report)),
-        _cell(_latest_cell(dep_report)),
         _cell(_severity_label(dep_report.top_severity)),
     ]
     return "| " + " | ".join(cells) + " |"
@@ -183,8 +188,13 @@ def _details(reports: list[DependencyReport]) -> list[str]:
                 f"- `{finding.source}` / {_severity_label(finding.severity)}: "
                 f"{finding.summary}"
             )
-            if finding.identifier:
-                text += f" (`{finding.identifier}`)"
+            identifier = (
+                _vuln_identifier(finding)
+                if finding.source == "osv" and finding.identifier
+                else finding.identifier
+            )
+            if identifier:
+                text += f" (`{identifier}`)"
             if finding.fixed_version:
                 text += f"; fixed in `{finding.fixed_version}`"
             if finding.url:
