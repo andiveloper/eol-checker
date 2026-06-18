@@ -1,0 +1,13 @@
+[gradle_plugins]
+"org.springframework.boot" = "spring-boot"
+
+[maven_artifacts]
+"org.springframework.boot:spring-boot-starter-parent" = "spring-boot"
+"org.springframework.boot:spring-boot-dependencies" = "spring-boot"
+"org.springframework.boot:spring-boot-starter-web" = "spring-boot"
+"org.springframework.boot:spring-boot-starter-security" = "spring-boot"
+"org.springframework.boot:spring-boot-starter-webflux" = "spring-boot"
+"org.springframework.boot:spring-boot-starter-data-mongodb" = "spring-boot"
+"org.springframework.boot:spring-boot-starter-actuator" = "spring-boot"
+"org.springframework.boot:spring-boot-starter-aop" = "spring-boot"
+"org.springframework.boot:spring-boot-starter-test" = "spring-boot"

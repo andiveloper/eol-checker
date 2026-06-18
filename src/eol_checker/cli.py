@@ -8,12 +8,13 @@ from pathlib import Path
 from typing import Optional, Sequence
 
 from eol_checker import __version__
-from eol_checker.checker import check_dependencies
 from eol_checker.discovery import DEFAULT_SKIP_DIRS, discover_manifests
-from eol_checker.eol_api import DEFAULT_BASE_URL, EolApiClient
-from eol_checker.models import Dependency, Report, Status
+from eol_checker.eol_api import DEFAULT_BASE_URL
+from eol_checker.models import Dependency, Report, Severity
 from eol_checker.parsers.base import ParserRegistry, default_registry
+from eol_checker.providers.base import default_providers
 from eol_checker.report import render
+from eol_checker.resolution import resolve_versions
 
 
 def build_arg_parser() -> argparse.ArgumentParser:
@@ -21,7 +22,7 @@ def build_arg_parser() -> argparse.ArgumentParser:
         prog="eol-checker",
         description=(
             "Scan dependency manifests (files or directories) and check package "
-            "versions against endoflife.date."
+            "versions across EOL, vulnerability, and version-currency sources."
         ),
     )
     parser.add_argument(
@@ -64,9 +65,20 @@ def build_arg_parser() -> argparse.ArgumentParser:
         help=f"endoflife.date API base URL (default: {DEFAULT_BASE_URL}).",
     )
     parser.add_argument(
+        "--source",
+        default="eol,osv,deps-dev",
+        help="Comma-separated providers to run: eol,osv,deps-dev (default: all).",
+    )
+    parser.add_argument(
+        "--min-severity",
+        choices=[severity.value for severity in Severity],
+        default=Severity.HIGH.value,
+        help="Exit non-zero when top severity is at least this value (default: high).",
+    )
+    parser.add_argument(
         "--no-fail",
         action="store_true",
-        help="Always exit 0, even when EOL dependencies are found.",
+        help="Always exit 0, even when findings meet --min-severity.",
     )
     parser.add_argument(
         "--version",
@@ -105,6 +117,16 @@ def _collect_dependencies(
 def main(argv: Optional[Sequence[str]] = None) -> int:
     args = build_arg_parser().parse_args(argv)
     registry = default_registry()
+    selected_sources = [source.strip() for source in args.source.split(",") if source.strip()]
+    valid_sources = {"eol", "osv", "deps-dev"}
+    unknown_sources = sorted(set(selected_sources) - valid_sources)
+    if unknown_sources:
+        print(
+            f"Unknown --source value(s): {', '.join(unknown_sources)}. "
+            f"Available: {', '.join(sorted(valid_sources))}",
+            file=sys.stderr,
+        )
+        return 2
 
     if args.type and registry.by_name(args.type) is None:
         available = ", ".join(sorted(p.name for p in registry.parsers))
@@ -130,6 +152,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     dependencies = _collect_dependencies(
         discovery.files, explicit_files, registry, args.type, warnings
     )
+    dependencies = resolve_versions(dependencies)
 
     for warning in warnings:
         print(f"warning: {warning}", file=sys.stderr)
@@ -138,8 +161,16 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         print("No dependencies found to check.", file=sys.stderr)
         report = Report()
     else:
-        with EolApiClient(base_url=args.base_url) as client:
-            report = check_dependencies(dependencies, client)
+        provider_registry = default_providers(
+            selected_sources,
+            eol_base_url=args.base_url,
+        )
+        try:
+            report = Report(
+                dependency_reports=provider_registry.check(dependencies)
+            )
+        finally:
+            provider_registry.close()
 
     output = render(report, fmt=args.format)
 
@@ -148,7 +179,8 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     else:
         print(output)
 
-    if report.has_eol and not args.no_fail:
+    min_severity = Severity(args.min_severity)
+    if report.max_severity.rank >= min_severity.rank and not args.no_fail:
         return 1
     return 0
 

@@ -87,7 +87,10 @@ class ParserRegistry:
 def default_registry() -> ParserRegistry:
     """Build a registry pre-populated with all built-in parsers."""
     from eol_checker.parsers.gradle import GradleParser
+    from eol_checker.parsers.gradle_catalog import GradleCatalogParser
     from eol_checker.parsers.maven import MavenPomParser
     from eol_checker.parsers.requirements import RequirementsParser
 
-    return ParserRegistry([GradleParser(), RequirementsParser(), MavenPomParser()])
+    return ParserRegistry(
+        [GradleParser(), RequirementsParser(), MavenPomParser(), GradleCatalogParser()]
+    )

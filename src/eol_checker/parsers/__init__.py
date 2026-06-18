@@ -7,6 +7,7 @@ from eol_checker.parsers.base import (
     default_registry,
 )
 from eol_checker.parsers.gradle import GradleParser
+from eol_checker.parsers.gradle_catalog import GradleCatalogParser
 from eol_checker.parsers.maven import MavenPomParser
 from eol_checker.parsers.requirements import RequirementsParser
 
@@ -16,6 +17,7 @@ __all__ = [
     "ParserRegistry",
     "default_registry",
     "GradleParser",
+    "GradleCatalogParser",
     "RequirementsParser",
     "MavenPomParser",
 ]

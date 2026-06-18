@@ -1,17 +1,24 @@
 # eol-checker
 
 Scan dependency manifest files (or whole directories) and check the declared
-package versions against [endoflife.date](https://endoflife.date/).
+package versions across lifecycle, vulnerability, and dependency-currency data
+sources.
 
 It parses explicitly declared dependencies, builds a [package URL (purl)](https://github.com/package-url/purl-spec)
-for each, maps it to an endoflife.date product, and reports whether the version
-you use falls in an end-of-life (EOL) release cycle.
+for each, and combines findings from:
+
+| Source | Purpose |
+| --- | --- |
+| [endoflife.date](https://endoflife.date/) | Product lifecycle / EOL checks for runtimes and frameworks. |
+| [OSV.dev](https://osv.dev/) | Known vulnerabilities for concrete package versions. |
+| [deps.dev](https://deps.dev/) | Latest-version / dependency currency checks. |
 
 The parser layer is pluggable. Supported formats:
 
 | Format | Files matched | `--type` | Ecosystem |
 | --- | --- | --- | --- |
 | Gradle | `build.gradle`, `build.gradle.kts`, `*.gradle`, `*.gradle.kts` | `gradle` | maven |
+| Gradle version catalog | `libs.versions.toml` | `gradle-catalog` | maven |
 | Python pip | `requirements.txt`, `requirements*.txt`, `*-requirements.txt` | `pip` | pypi |
 | Maven POM | `pom.xml` | `maven` | maven |
 
@@ -20,7 +27,8 @@ Adding more formats does not require changing the API or reporting layers.
 ## Requirements
 
 - Python 3.9+
-- Network access to `https://endoflife.date`
+- Network access to `https://endoflife.date`, `https://api.osv.dev`, and
+  `https://api.deps.dev` unless sources are disabled with `--source`.
 
 ## Setup (virtual environment)
 
@@ -47,7 +55,13 @@ eol-checker path/to/project/
 
 # Mix of files and directories
 eol-checker build.gradle services/ requirements.txt pom.xml
+
+# Write a Markdown report to a file
+eol-checker samples/build.gradle --no-fail --output samples/build-report.md
 ```
+
+See `samples/build-report.md` for an example Markdown report generated from
+`samples/build.gradle`.
 
 ### Options
 
@@ -59,7 +73,9 @@ eol-checker build.gradle services/ requirements.txt pom.xml
 | `--no-recursive` | Only scan the top level of given directories. |
 | `--include-hidden` | Include hidden files/directories during discovery. |
 | `--base-url URL` | Override the endoflife.date API base URL. |
-| `--no-fail` | Always exit `0`, even when EOL dependencies are found. |
+| `--source eol,osv,deps-dev` | Comma-separated providers to run (default: all). |
+| `--min-severity none|low|medium|high|critical|unknown` | Exit non-zero when top severity is at least this value (default: `high`). |
+| `--no-fail` | Always exit `0`, even when findings meet `--min-severity`. |
 
 Directory discovery skips noisy/vendored directories by default
 (`.git`, `.gradle`, `build`, `node_modules`, `.venv`, `venv`, `target`,
@@ -67,24 +83,23 @@ Directory discovery skips noisy/vendored directories by default
 
 ### Exit codes
 
-- `0`: completed; no EOL dependencies found (or `--no-fail`).
-- `1`: at least one dependency is in an EOL release cycle.
-- `2`: invalid usage (e.g. unknown `--type`).
+- `0`: completed; no finding meets `--min-severity` (or `--no-fail`).
+- `1`: at least one dependency has a finding at or above `--min-severity`.
+- `2`: invalid usage (e.g. unknown `--type` or `--source`).
 
 ## Output
 
-Markdown is the default. It includes a summary table (counts per status) and a
-results table with file, package, version, ecosystem, matched product, release
-cycle, EOL date, maintained status, and overall status.
+Markdown is the default. It includes a severity summary, one row per dependency,
+and a detailed findings section for non-`none` findings.
 
-Statuses:
+Main result columns:
 
-- `ok`: matched a release cycle that is not EOL.
-- `eol`: matched an EOL release cycle.
-- `unknown-version`: mapped to a product, but the version did not match a tracked cycle (or no version was declared).
-- `unsupported-version`: dynamic version (e.g. `1.+`, `latest.release`) that cannot be resolved statically.
-- `unmapped`: not tracked by endoflife.date.
-- `api-error`: the API request failed.
+- `EOL`: endoflife.date result (`supported`, EOL finding, unknown, or unmapped).
+- `Vulns`: number of OSV vulnerabilities found for the concrete version.
+- `Latest`: latest/default version from deps.dev when the current version is behind.
+- `Top severity`: max severity across all findings for that dependency.
+
+Severity values: `none`, `low`, `medium`, `high`, `critical`, `unknown`.
 
 ## Development
 
@@ -95,11 +110,13 @@ pytest
 
 ## Limitations
 
-- Text-based parsing only; it does not execute build tools. Versions resolved
-  through version catalogs, variables, BOMs/platforms, constraints, or
-  transitive dependencies are not resolved.
+- Static parsing only by default; it does not execute build tools. Some static
+  backfills are supported: Gradle version catalogs, `gradle.lockfile`,
+  `poetry.lock`, and curated Spring Boot plugin/BOM mappings. Fully resolved
+  transitive dependency graphs still require a future build-tool mode.
 - endoflife.date tracks product lifecycles, not every artifact, so many
-  dependencies will legitimately be reported as `unmapped`.
+  dependencies will legitimately show as EOL `unmapped`; OSV/deps.dev are used
+  for broad library coverage.
 - `requirements.txt`: includes (`-r`/`-c`) are not followed (discovery finds
   those files separately if present); only exact pins (`==`/`===`) yield a
   concrete version, ranges/unpinned report as `unknown-version`, and wildcard
@@ -117,3 +134,10 @@ declares its `name`, `ecosystem`, and filename `patterns`, and implements
 `parse()` to return `Dependency` records. Register it in `default_registry()`
 in `src/eol_checker/parsers/base.py`. Discovery and reporting pick it up
 automatically.
+
+## Extending with new data sources
+
+Add a provider in `src/eol_checker/providers/` implementing the `Provider`
+protocol and register it in `default_providers()` in
+`src/eol_checker/providers/base.py`. Providers emit `Finding` objects, which
+are aggregated into the Markdown/JSON report automatically.
