@@ -77,3 +77,43 @@ def test_supported_eol_cell_includes_eol_date():
     report = Report(dependency_reports=[DependencyReport(dep, [finding])])
     output = render(report, fmt="markdown")
     assert "supported (EOL: 2027-06-26)" in output
+
+
+def test_vuln_cell_lists_cve_aliases():
+    dep = Dependency(
+        ecosystem="maven",
+        namespace="org.json",
+        name="json",
+        version="20250107",
+        purl="pkg:maven/org.json/json@20250107",
+        source_file="build.gradle",
+    )
+    finding = Finding(
+        source="osv",
+        severity=Severity.HIGH,
+        summary="Example vulnerability",
+        identifier="GHSA-1234",
+        metadata={"aliases": ["CVE-2025-12345", "GHSA-1234"]},
+    )
+    report = Report(dependency_reports=[DependencyReport(dep, [finding])])
+    output = render(report, fmt="markdown")
+    assert "1 (CVE-2025-12345)" in output
+
+
+def test_vuln_cell_does_not_count_osv_api_errors_as_vulns():
+    dep = Dependency(
+        ecosystem="maven",
+        namespace="org.json",
+        name="json",
+        version="20250107",
+        purl="pkg:maven/org.json/json@20250107",
+        source_file="build.gradle",
+    )
+    finding = Finding(
+        source="osv",
+        severity=Severity.UNKNOWN,
+        summary="OSV API error",
+    )
+    report = Report(dependency_reports=[DependencyReport(dep, [finding])])
+    output = render(report, fmt="markdown")
+    assert "| build.gradle | org.json:json | 20250107 | maven | unmapped | error | - | Unknown |" in output

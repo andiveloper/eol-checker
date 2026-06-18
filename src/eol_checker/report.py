@@ -135,7 +135,23 @@ def _vuln_cell(dep_report: DependencyReport) -> str:
     findings = dep_report.findings_by_source("osv")
     if not findings:
         return "0"
-    return str(len(findings))
+    vuln_findings = [finding for finding in findings if finding.identifier]
+    if not vuln_findings:
+        return "error"
+    identifiers = [_vuln_identifier(finding) for finding in vuln_findings]
+    identifiers = [identifier for identifier in identifiers if identifier]
+    if not identifiers:
+        return str(len(vuln_findings))
+    return f"{len(vuln_findings)} ({', '.join(identifiers)})"
+
+
+def _vuln_identifier(finding: Finding) -> Optional[str]:
+    aliases = finding.metadata.get("aliases", [])
+    if isinstance(aliases, list):
+        cves = sorted(str(alias) for alias in aliases if str(alias).startswith("CVE-"))
+        if cves:
+            return cves[0]
+    return finding.identifier
 
 
 def _latest_cell(dep_report: DependencyReport) -> str:

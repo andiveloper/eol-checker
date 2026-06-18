@@ -16,48 +16,48 @@ Checked **61** dependencies across enabled data sources.
 
 | File | Package | Version | Ecosystem | EOL | Vulns | Latest | Top severity |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| /Users/andreas.koeninger/git/playground/eol-checker/samples/build.gradle:55 | org.json:json | 20250107 | maven | unmapped | 1 | 20260522 | High |
-| /Users/andreas.koeninger/git/playground/eol-checker/samples/build.gradle:6 | org.springframework.boot:org.springframework.boot.gradle.plugin | 3.5.10 | maven | supported (EOL: 2026-06-30) | 1 | 4.1.0 | Medium |
-| /Users/andreas.koeninger/git/playground/eol-checker/samples/build.gradle:41 | org.springframework.boot:spring-boot-starter-web | 3.5.10 | maven | supported (EOL: 2026-06-30) | 1 | 4.1.0 | Medium |
-| /Users/andreas.koeninger/git/playground/eol-checker/samples/build.gradle:42 | org.springframework.boot:spring-boot-starter-oauth2-resource-server | 3.5.10 | maven | supported (EOL: 2026-06-30) | 1 | 4.1.0 | Medium |
-| /Users/andreas.koeninger/git/playground/eol-checker/samples/build.gradle:43 | org.springframework.boot:spring-boot-starter-security | 3.5.10 | maven | supported (EOL: 2026-06-30) | 1 | 4.1.0 | Medium |
-| /Users/andreas.koeninger/git/playground/eol-checker/samples/build.gradle:44 | org.springframework.boot:spring-boot-starter-oauth2-client | 3.5.10 | maven | supported (EOL: 2026-06-30) | 1 | 4.1.0 | Medium |
-| /Users/andreas.koeninger/git/playground/eol-checker/samples/build.gradle:45 | org.springframework.boot:spring-boot-starter-webflux | 3.5.10 | maven | supported (EOL: 2026-06-30) | 1 | 4.1.0 | Medium |
-| /Users/andreas.koeninger/git/playground/eol-checker/samples/build.gradle:46 | org.springframework.boot:spring-boot-starter-data-mongodb | 3.5.10 | maven | supported (EOL: 2026-06-30) | 1 | 4.1.0 | Medium |
-| /Users/andreas.koeninger/git/playground/eol-checker/samples/build.gradle:47 | org.springframework.ai:spring-ai-bom | 1.1.2 | maven | unmapped | 1 | 2.0.0 | Medium |
-| /Users/andreas.koeninger/git/playground/eol-checker/samples/build.gradle:59 | org.springdoc:springdoc-openapi-bom | 2.8.15 | maven | unmapped | 1 | 3.0.3 | Medium |
-| /Users/andreas.koeninger/git/playground/eol-checker/samples/build.gradle:65 | org.springframework.boot:spring-boot-configuration-processor | 3.5.10 | maven | supported (EOL: 2026-06-30) | 1 | 4.1.0 | Medium |
-| /Users/andreas.koeninger/git/playground/eol-checker/samples/build.gradle:72 | org.springframework.boot:spring-boot-starter-actuator | 3.5.10 | maven | supported (EOL: 2026-06-30) | 1 | 4.1.0 | Medium |
-| /Users/andreas.koeninger/git/playground/eol-checker/samples/build.gradle:91 | org.springframework.boot:spring-boot-starter-test | 3.5.10 | maven | supported (EOL: 2026-06-30) | 1 | 4.1.0 | Medium |
-| /Users/andreas.koeninger/git/playground/eol-checker/samples/build.gradle:93 | org.springframework.boot:spring-boot-test-autoconfigure | 3.5.10 | maven | supported (EOL: 2026-06-30) | 1 | 4.1.0 | Medium |
-| /Users/andreas.koeninger/git/playground/eol-checker/samples/build.gradle:94 | org.springframework.cloud:spring-cloud-contract-wiremock | 4.1.4 | maven | unmapped | 1 | 5.0.3 | Medium |
-| /Users/andreas.koeninger/git/playground/eol-checker/samples/build.gradle:95 | org.springframework.boot:spring-boot-testcontainers | 3.5.10 | maven | supported (EOL: 2026-06-30) | 1 | 4.1.0 | Medium |
-| /Users/andreas.koeninger/git/playground/eol-checker/samples/build.gradle:4 | com.diffplug.spotless:com.diffplug.spotless.gradle.plugin | 8.6.0 | maven | unmapped | 1 | 8.7.0 | Low |
-| /Users/andreas.koeninger/git/playground/eol-checker/samples/build.gradle:5 | org.sonarqube:org.sonarqube.gradle.plugin | 7.3.0.8198 | maven | unmapped | 1 | 7.3.1.8318 | Low |
-| /Users/andreas.koeninger/git/playground/eol-checker/samples/build.gradle:35 | io.opentelemetry:opentelemetry-bom | 1.44.1 | maven | unmapped | 1 | 1.63.0 | Low |
-| /Users/andreas.koeninger/git/playground/eol-checker/samples/build.gradle:36 | io.opentelemetry.instrumentation:opentelemetry-instrumentation-bom | 2.24.0 | maven | unmapped | 1 | 2.28.1 | Low |
-| /Users/andreas.koeninger/git/playground/eol-checker/samples/build.gradle:52 | net.sourceforge.tess4j:tess4j | 5.13.0 | maven | unmapped | 1 | 5.19.0 | Low |
-| /Users/andreas.koeninger/git/playground/eol-checker/samples/build.gradle:53 | org.apache.pdfbox:pdfbox | 3.0.6 | maven | unmapped | 1 | 3.0.7 | Low |
-| /Users/andreas.koeninger/git/playground/eol-checker/samples/build.gradle:56 | org.bytedeco:javacv-platform | 1.5.12 | maven | unmapped | 1 | 1.5.13 | Low |
-| /Users/andreas.koeninger/git/playground/eol-checker/samples/build.gradle:57 | commons-codec:commons-codec | 1.21.0 | maven | unmapped | 1 | 1.22.0 | Low |
-| /Users/andreas.koeninger/git/playground/eol-checker/samples/build.gradle:67 | org.mapstruct:mapstruct | 1.6.3 | maven | unmapped | 1 | 1.7.0.Beta1 | Low |
-| /Users/andreas.koeninger/git/playground/eol-checker/samples/build.gradle:68 | org.mapstruct:mapstruct-processor | 1.6.3 | maven | unmapped | 1 | 1.7.0.Beta1 | Low |
-| /Users/andreas.koeninger/git/playground/eol-checker/samples/build.gradle:74 | com.microsoft.azure:applicationinsights-web | 3.7.2 | maven | unmapped | 1 | 3.7.8 | Low |
-| /Users/andreas.koeninger/git/playground/eol-checker/samples/build.gradle:75 | com.microsoft.azure:applicationinsights-runtime-attach | 3.7.2 | maven | unmapped | 1 | 3.7.8 | Low |
-| /Users/andreas.koeninger/git/playground/eol-checker/samples/build.gradle:77 | io.github.resilience4j:resilience4j-spring-boot3 | 2.3.0 | maven | unmapped | 1 | 2.4.0 | Low |
-| /Users/andreas.koeninger/git/playground/eol-checker/samples/build.gradle:80 | io.opentelemetry:opentelemetry-bom | 1.44.1 | maven | unmapped | 1 | 1.63.0 | Low |
-| /Users/andreas.koeninger/git/playground/eol-checker/samples/build.gradle:81 | io.opentelemetry.instrumentation:opentelemetry-instrumentation-bom | 2.24.0 | maven | unmapped | 1 | 2.28.1 | Low |
-| /Users/andreas.koeninger/git/playground/eol-checker/samples/build.gradle:85 | io.opentelemetry.instrumentation:opentelemetry-spring-boot-starter | 2.24.0 | maven | unmapped | 1 | 2.28.1 | Low |
-| /Users/andreas.koeninger/git/playground/eol-checker/samples/build.gradle:96 | org.testcontainers:testcontainers-bom | 2.0.3 | maven | unmapped | 1 | 2.0.5 | Low |
-| /Users/andreas.koeninger/git/playground/eol-checker/samples/build.gradle:99 | net.datafaker:datafaker | 2.5.3 | maven | unmapped | 1 | 2.6.0 | Low |
-| /Users/andreas.koeninger/git/playground/eol-checker/samples/build.gradle:100 | com.tngtech.archunit:archunit-junit5 | 1.4.1 | maven | unmapped | 1 | 1.4.2 | Low |
-| /Users/andreas.koeninger/git/playground/eol-checker/samples/build.gradle:7 | io.spring.dependency-management:io.spring.dependency-management.gradle.plugin | 1.1.7 | maven | unmapped | 1 | - | Unknown |
-| /Users/andreas.koeninger/git/playground/eol-checker/samples/build.gradle:54 | com.github.jai-imageio:jai-imageio-jpeg2000 | 1.4.0 | maven | unmapped | 1 | - | Unknown |
-| /Users/andreas.koeninger/git/playground/eol-checker/samples/build.gradle:69 | org.projectlombok:lombok-mapstruct-binding | 0.2.0 | maven | unmapped | 1 | - | Unknown |
+| /Users/andreas.koeninger/git/playground/eol-checker/samples/build.gradle:55 | org.json:json | 20250107 | maven | unmapped | error | 20260522 | High |
+| /Users/andreas.koeninger/git/playground/eol-checker/samples/build.gradle:6 | org.springframework.boot:org.springframework.boot.gradle.plugin | 3.5.10 | maven | supported (EOL: 2026-06-30) | error | 4.1.0 | Medium |
+| /Users/andreas.koeninger/git/playground/eol-checker/samples/build.gradle:41 | org.springframework.boot:spring-boot-starter-web | 3.5.10 | maven | supported (EOL: 2026-06-30) | error | 4.1.0 | Medium |
+| /Users/andreas.koeninger/git/playground/eol-checker/samples/build.gradle:42 | org.springframework.boot:spring-boot-starter-oauth2-resource-server | 3.5.10 | maven | supported (EOL: 2026-06-30) | error | 4.1.0 | Medium |
+| /Users/andreas.koeninger/git/playground/eol-checker/samples/build.gradle:43 | org.springframework.boot:spring-boot-starter-security | 3.5.10 | maven | supported (EOL: 2026-06-30) | error | 4.1.0 | Medium |
+| /Users/andreas.koeninger/git/playground/eol-checker/samples/build.gradle:44 | org.springframework.boot:spring-boot-starter-oauth2-client | 3.5.10 | maven | supported (EOL: 2026-06-30) | error | 4.1.0 | Medium |
+| /Users/andreas.koeninger/git/playground/eol-checker/samples/build.gradle:45 | org.springframework.boot:spring-boot-starter-webflux | 3.5.10 | maven | supported (EOL: 2026-06-30) | error | 4.1.0 | Medium |
+| /Users/andreas.koeninger/git/playground/eol-checker/samples/build.gradle:46 | org.springframework.boot:spring-boot-starter-data-mongodb | 3.5.10 | maven | supported (EOL: 2026-06-30) | error | 4.1.0 | Medium |
+| /Users/andreas.koeninger/git/playground/eol-checker/samples/build.gradle:47 | org.springframework.ai:spring-ai-bom | 1.1.2 | maven | unmapped | error | 2.0.0 | Medium |
+| /Users/andreas.koeninger/git/playground/eol-checker/samples/build.gradle:59 | org.springdoc:springdoc-openapi-bom | 2.8.15 | maven | unmapped | error | 3.0.3 | Medium |
+| /Users/andreas.koeninger/git/playground/eol-checker/samples/build.gradle:65 | org.springframework.boot:spring-boot-configuration-processor | 3.5.10 | maven | supported (EOL: 2026-06-30) | error | 4.1.0 | Medium |
+| /Users/andreas.koeninger/git/playground/eol-checker/samples/build.gradle:72 | org.springframework.boot:spring-boot-starter-actuator | 3.5.10 | maven | supported (EOL: 2026-06-30) | error | 4.1.0 | Medium |
+| /Users/andreas.koeninger/git/playground/eol-checker/samples/build.gradle:91 | org.springframework.boot:spring-boot-starter-test | 3.5.10 | maven | supported (EOL: 2026-06-30) | error | 4.1.0 | Medium |
+| /Users/andreas.koeninger/git/playground/eol-checker/samples/build.gradle:93 | org.springframework.boot:spring-boot-test-autoconfigure | 3.5.10 | maven | supported (EOL: 2026-06-30) | error | 4.1.0 | Medium |
+| /Users/andreas.koeninger/git/playground/eol-checker/samples/build.gradle:94 | org.springframework.cloud:spring-cloud-contract-wiremock | 4.1.4 | maven | unmapped | error | 5.0.3 | Medium |
+| /Users/andreas.koeninger/git/playground/eol-checker/samples/build.gradle:95 | org.springframework.boot:spring-boot-testcontainers | 3.5.10 | maven | supported (EOL: 2026-06-30) | error | 4.1.0 | Medium |
+| /Users/andreas.koeninger/git/playground/eol-checker/samples/build.gradle:4 | com.diffplug.spotless:com.diffplug.spotless.gradle.plugin | 8.6.0 | maven | unmapped | error | 8.7.0 | Low |
+| /Users/andreas.koeninger/git/playground/eol-checker/samples/build.gradle:5 | org.sonarqube:org.sonarqube.gradle.plugin | 7.3.0.8198 | maven | unmapped | error | 7.3.1.8318 | Low |
+| /Users/andreas.koeninger/git/playground/eol-checker/samples/build.gradle:35 | io.opentelemetry:opentelemetry-bom | 1.44.1 | maven | unmapped | error | 1.63.0 | Low |
+| /Users/andreas.koeninger/git/playground/eol-checker/samples/build.gradle:36 | io.opentelemetry.instrumentation:opentelemetry-instrumentation-bom | 2.24.0 | maven | unmapped | error | 2.28.1 | Low |
+| /Users/andreas.koeninger/git/playground/eol-checker/samples/build.gradle:52 | net.sourceforge.tess4j:tess4j | 5.13.0 | maven | unmapped | error | 5.19.0 | Low |
+| /Users/andreas.koeninger/git/playground/eol-checker/samples/build.gradle:53 | org.apache.pdfbox:pdfbox | 3.0.6 | maven | unmapped | error | 3.0.7 | Low |
+| /Users/andreas.koeninger/git/playground/eol-checker/samples/build.gradle:56 | org.bytedeco:javacv-platform | 1.5.12 | maven | unmapped | error | 1.5.13 | Low |
+| /Users/andreas.koeninger/git/playground/eol-checker/samples/build.gradle:57 | commons-codec:commons-codec | 1.21.0 | maven | unmapped | error | 1.22.0 | Low |
+| /Users/andreas.koeninger/git/playground/eol-checker/samples/build.gradle:67 | org.mapstruct:mapstruct | 1.6.3 | maven | unmapped | error | 1.7.0.Beta1 | Low |
+| /Users/andreas.koeninger/git/playground/eol-checker/samples/build.gradle:68 | org.mapstruct:mapstruct-processor | 1.6.3 | maven | unmapped | error | 1.7.0.Beta1 | Low |
+| /Users/andreas.koeninger/git/playground/eol-checker/samples/build.gradle:74 | com.microsoft.azure:applicationinsights-web | 3.7.2 | maven | unmapped | error | 3.7.8 | Low |
+| /Users/andreas.koeninger/git/playground/eol-checker/samples/build.gradle:75 | com.microsoft.azure:applicationinsights-runtime-attach | 3.7.2 | maven | unmapped | error | 3.7.8 | Low |
+| /Users/andreas.koeninger/git/playground/eol-checker/samples/build.gradle:77 | io.github.resilience4j:resilience4j-spring-boot3 | 2.3.0 | maven | unmapped | error | 2.4.0 | Low |
+| /Users/andreas.koeninger/git/playground/eol-checker/samples/build.gradle:80 | io.opentelemetry:opentelemetry-bom | 1.44.1 | maven | unmapped | error | 1.63.0 | Low |
+| /Users/andreas.koeninger/git/playground/eol-checker/samples/build.gradle:81 | io.opentelemetry.instrumentation:opentelemetry-instrumentation-bom | 2.24.0 | maven | unmapped | error | 2.28.1 | Low |
+| /Users/andreas.koeninger/git/playground/eol-checker/samples/build.gradle:85 | io.opentelemetry.instrumentation:opentelemetry-spring-boot-starter | 2.24.0 | maven | unmapped | error | 2.28.1 | Low |
+| /Users/andreas.koeninger/git/playground/eol-checker/samples/build.gradle:96 | org.testcontainers:testcontainers-bom | 2.0.3 | maven | unmapped | error | 2.0.5 | Low |
+| /Users/andreas.koeninger/git/playground/eol-checker/samples/build.gradle:99 | net.datafaker:datafaker | 2.5.3 | maven | unmapped | error | 2.6.0 | Low |
+| /Users/andreas.koeninger/git/playground/eol-checker/samples/build.gradle:100 | com.tngtech.archunit:archunit-junit5 | 1.4.1 | maven | unmapped | error | 1.4.2 | Low |
+| /Users/andreas.koeninger/git/playground/eol-checker/samples/build.gradle:7 | io.spring.dependency-management:io.spring.dependency-management.gradle.plugin | 1.1.7 | maven | unmapped | error | - | Unknown |
+| /Users/andreas.koeninger/git/playground/eol-checker/samples/build.gradle:54 | com.github.jai-imageio:jai-imageio-jpeg2000 | 1.4.0 | maven | unmapped | error | - | Unknown |
+| /Users/andreas.koeninger/git/playground/eol-checker/samples/build.gradle:69 | org.projectlombok:lombok-mapstruct-binding | 0.2.0 | maven | unmapped | error | - | Unknown |
 | /Users/andreas.koeninger/git/playground/eol-checker/samples/build.gradle:73 | com.configcat:configcat-java-client | 9.+ | maven | unmapped | 0 | 10.0.1 | Unknown |
-| /Users/andreas.koeninger/git/playground/eol-checker/samples/build.gradle:76 | org.springframework.boot:spring-boot-starter-aop | 3.5.10 | maven | supported (EOL: 2026-06-30) | 1 | 4.0.0-M2 | Unknown |
-| /Users/andreas.koeninger/git/playground/eol-checker/samples/build.gradle:104 | org.apache.commons:commons-collections4 | 4.5.0 | maven | unmapped | 1 | - | Unknown |
-| /Users/andreas.koeninger/git/playground/eol-checker/samples/build.gradle:105 | org.apache.commons:commons-lang3 | 3.20.0 | maven | unmapped | 1 | - | Unknown |
+| /Users/andreas.koeninger/git/playground/eol-checker/samples/build.gradle:76 | org.springframework.boot:spring-boot-starter-aop | 3.5.10 | maven | supported (EOL: 2026-06-30) | error | 4.0.0-M2 | Unknown |
+| /Users/andreas.koeninger/git/playground/eol-checker/samples/build.gradle:104 | org.apache.commons:commons-collections4 | 4.5.0 | maven | unmapped | error | - | Unknown |
+| /Users/andreas.koeninger/git/playground/eol-checker/samples/build.gradle:105 | org.apache.commons:commons-lang3 | 3.20.0 | maven | unmapped | error | - | Unknown |
 | /Users/andreas.koeninger/git/playground/eol-checker/samples/build.gradle:2 | java:java.gradle.plugin | - | maven | unmapped | 0 | - | None |
 | /Users/andreas.koeninger/git/playground/eol-checker/samples/build.gradle:3 | jacoco:jacoco.gradle.plugin | - | maven | unmapped | 0 | - | None |
 | /Users/andreas.koeninger/git/playground/eol-checker/samples/build.gradle:48 | org.springframework.ai:spring-ai-starter-model-azure-openai | - | maven | unmapped | 0 | - | None |
