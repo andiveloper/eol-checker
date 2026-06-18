@@ -18,6 +18,11 @@ See [`samples/build.gradle`](samples/build.gradle) and the generated
 | [OSV.dev](https://osv.dev/) | `osv` | Known vulnerabilities for concrete package versions. |
 | [deps.dev](https://deps.dev/) | `deps-dev` | Latest-version / dependency currency checks. |
 
+`--source` is optional. If you omit it, eol-checker runs all providers
+(`eol,osv,deps-dev`). Use it only when you want to narrow the scan, for example
+`--source osv` for vulnerability checks only or `--source eol,osv` to skip
+latest-version checks.
+
 The parser layer is pluggable. Supported formats:
 
 | Format | Files matched | `--type` | Ecosystem |
@@ -78,7 +83,7 @@ See `samples/build-report.md` for an example Markdown report generated from
 | `--no-recursive` | Only scan the top level of given directories. |
 | `--include-hidden` | Include hidden files/directories during discovery. |
 | `--base-url URL` | Override the endoflife.date API base URL. |
-| `--source eol,osv,deps-dev` | Comma-separated providers to run (default: all). |
+| `--source eol,osv,deps-dev` | Optional comma-separated providers to run. Omit it to run all providers; pass one or more values to disable the others. |
 | `--min-severity none|low|medium|high|critical|unknown` | Exit non-zero when top severity is at least this value (default: `high`). |
 | `--no-fail` | Always exit `0`, even when findings meet `--min-severity`. |
 
