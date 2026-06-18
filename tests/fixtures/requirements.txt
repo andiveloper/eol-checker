@@ -1,0 +1,9 @@
+# Project requirements
+Django==5.0.1
+requests
+Flask>=2.0
+urllib3==2.*
+uvicorn[standard]==0.29.0  # ASGI server
+Flask-SQLAlchemy==3.1.1
+-r base.txt
+--hash=sha256:abcdef
