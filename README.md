@@ -7,6 +7,9 @@ sources.
 It parses explicitly declared dependencies, builds a [package URL (purl)](https://github.com/package-url/purl-spec)
 for each, and combines findings from multiple data sources.
 
+See [`samples/build.gradle`](samples/build.gradle) and the generated
+[`samples/build-report.md`](samples/build-report.md) for an example scan.
+
 ## Data sources
 
 | Source | `--source` value | Purpose |
